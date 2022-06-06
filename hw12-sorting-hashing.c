@@ -369,14 +369,14 @@ int hashing(int *a, int **ht)
 
 int search(int *ht, int key)
 {
-	int index = hashCode(key);
+	int index = hashCode(key);	//key의 홈버킷을 받고
 
-	if(ht[index] == key)
+	if(ht[index] == key)	//해시 테이블의 index값과 key값이 같다면 index 리턴
 		return index;
 
-	while(ht[++index] != key)
+	while(ht[++index] != key)	//같지않다면 key값과 같아질때까지 index 값을 변경
 	{
 		index = index % MAX_HASH_TABLE_SIZE;
 	}
-	return index;
+	return index;	//index 리턴
 }
