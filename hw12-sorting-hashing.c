@@ -145,15 +145,15 @@ int freeArray(int *a)
 
 void printArray(int *a)
 {
-	if (a == NULL) {    //배열 a가 NULL
-		printf("nothing to print.\n");
-		return;
+	if (a == NULL) {    //배열 a가 NULL이면
+		printf("nothing to print.\n");	//에러문구 출력
+		return;	//함수 종료
 	}
 	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
-		printf("a[%02d] ", i);
+		printf("a[%02d] ", i);	//배열 인덱스 출력
 	printf("\n");
 	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
-		printf("%5d ", a[i]);
+		printf("%5d ", a[i]);	//배열의 key값 출력
 	printf("\n");
 }
 
@@ -175,13 +175,13 @@ int selectionSort(int *a)
 		min = a[i];
 		for(j = i+1; j < MAX_ARRAY_SIZE; j++)
 		{
-			if (min > a[j])
+			if (min > a[j])	//최소값 찾기
 			{
 				min = a[j];
 				minindex = j;
 			}
 		}
-		a[minindex] = a[i];
+		a[minindex] = a[i];	//a[i]의 값과 최솟값 교환
 		a[i] = min;
 	}
 
@@ -203,12 +203,12 @@ int insertionSort(int *a)
 	{
 		t = a[i];
 		j = i;
-		while (a[j-1] > t && j > 0)
+		while (a[j-1] > t && j > 0)	//배열의 처음이나 a[i]의 값보다 작은 값을 만나면 반복문 종료
 		{
 			a[j] = a[j-1];
 			j--;
 		}
-		a[j] = t;
+		a[j] = t;	//a[j]에 a[i]의 값 삽입
 	}
 
 	printf("----------------------------------------------------------------\n");
@@ -230,7 +230,7 @@ int bubbleSort(int *a)
 	{
 		for (j = 1; j < MAX_ARRAY_SIZE; j++)
 		{
-			if (a[j-1] > a[j])
+			if (a[j-1] > a[j])	//큰 값을 다음 인덱스로 이동하며 배열의 끝까지 이동
 			{
 				t = a[j-1];
 				a[j-1] = a[j];
@@ -254,11 +254,11 @@ int shellSort(int *a)
 
 	printArray(a);
 
-	for (h = MAX_ARRAY_SIZE/2; h > 0; h /= 2)
+	for (h = MAX_ARRAY_SIZE/2; h > 0; h /= 2) //전체 길이의 1/2로 줄여가며 h를 간격으로 설정
 	{
 		for (i = 0; i < h; i++)
 		{
-			for(j = i + h; j < MAX_ARRAY_SIZE; j += h)
+			for(j = i + h; j < MAX_ARRAY_SIZE; j += h)	//삽입 정렬 사용
 			{
 				v = a[j];
 				k = j;
@@ -284,26 +284,28 @@ int quickSort(int *a, int n)
 
 	if (n > 1)
 	{
-		v = a[n-1];
+		v = a[n-1];	//피봇을 n-1로 설정
 		i = -1;
 		j = n - 1;
 
 		while(1)
 		{
-			while(a[++i] < v);
-			while(a[--j] > v);
+			while(a[++i] < v);	//피봇보다 큰값이 있으면 반복문 종료
+			while(a[--j] > v);	//피봇보다 작은값이 있으면 반복문 종료
 
-			if (i >= j) break;
+			if (i >= j) break;	//i와 j가 같거나 i가 인덱스 j를 넘어가면 반복문 종료
+			//자리 교환
 			t = a[i];
 			a[i] = a[j];
 			a[j] = t;
 		}
+		//i와 n-1의 값 교환
 		t = a[i];
 		a[i] = a[n-1];
 		a[n-1] = t;
 
-		quickSort(a, i);
-		quickSort(a+i+1, n-i-1);
+		quickSort(a, i);	//i와 i의 앞쪽 배열을 정렬하기위해 재귀 호출
+		quickSort(a+i+1, n-i-1);	//i의 뒤쪽 배열을 정렬하기위해 재귀 호출
 	}
 
 
@@ -311,7 +313,7 @@ int quickSort(int *a, int n)
 }
 
 int hashCode(int key) {     //해시 함수 (제산 함수)
-   return key % MAX_HASH_TABLE_SIZE;    //홀수로 나눈 나머지를 홈 버킷으로 사용
+   return key % MAX_HASH_TABLE_SIZE;    //배열의 크기(홀수)로 나눈 나머지를 홈 버킷으로 사용
 }
 
 int hashing(int *a, int **ht)
@@ -327,7 +329,7 @@ int hashing(int *a, int **ht)
 	}
 
 	for(int i = 0; i < MAX_HASH_TABLE_SIZE; i++)
-		hashtable[i] = -1;
+		hashtable[i] = -1;	//헤시 테이블 초기화
 
 	/*
 	for(int i = 0; i < MAX_HASH_TABLE_SIZE; i++)
@@ -340,25 +342,25 @@ int hashing(int *a, int **ht)
 	for (int i = 0; i < MAX_ARRAY_SIZE; i++)
 	{
 		key = a[i];
-		hashcode = hashCode(key);
+		hashcode = hashCode(key);	//홈 버킷을 받아옴
 		/*
 		printf("key = %d, hashcode = %d, hashtable[%d]=%d\n", key, hashcode, hashcode, hashtable[hashcode]);
 		*/
-		if (hashtable[hashcode] == -1)
+		if (hashtable[hashcode] == -1)	//버킷에 초기값이 저장되어있다면(충돌 X)
 		{
-			hashtable[hashcode] = key;
-		} else 	{
+			hashtable[hashcode] = key;	//버킷의 위치에 key값 저장
+		} else 	{	//버킷에 초기값이 아니라면(충돌 O)
 
 			index = hashcode;
 
-			while(hashtable[index] != -1)
+			while(hashtable[index] != -1)	//값이 -1인 버킷이 나올때까지 인덱스를 바꿈
 			{
 				index = (++index) % MAX_HASH_TABLE_SIZE;
 				/*
 				printf("index = %d\n", index);
 				*/
 			}
-			hashtable[index] = key;
+			hashtable[index] = key;	//값이 -1인 버킷에 key값 저장
 		}
 	}
 
